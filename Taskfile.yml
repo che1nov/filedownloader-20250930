@@ -1,0 +1,58 @@
+version: '3'
+
+vars:
+  BINARY_NAME: filedownloader
+  MAIN_PATH: cmd/main.go
+  PORT: 8080
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  build:
+    desc: Build the binary
+    cmds:
+      - echo "Building {{.BINARY_NAME}}..."
+      - go build -o {{.BINARY_NAME}} {{.MAIN_PATH}}
+
+  run:
+    desc: Run the server
+    cmds:
+      - echo "Starting {{.BINARY_NAME}} server..."
+      - go run {{.MAIN_PATH}}
+
+  dev:
+    desc: Run in development mode with debug logging
+    cmds:
+      - echo "Starting in development mode..."
+      - DEBUG=true go run {{.MAIN_PATH}}
+
+  test:
+    desc: Run all tests
+    cmds:
+      - echo "Running tests..."
+      - go test ./...
+
+  clean:
+    desc: Clean build artifacts and temporary files
+    cmds:
+      - echo "Cleaning build artifacts..."
+      - rm -f {{.BINARY_NAME}}
+      - rm -rf downloads/*
+      - rm -rf state/*.json
+      - echo "Clean completed"
+
+  deps:
+    desc: Install dependencies
+    cmds:
+      - echo "Installing dependencies..."
+      - go mod tidy
+      - go mod download
+
+  fmt:
+    desc: Format code
+    cmds:
+      - echo "Formatting code..."
+      - go fmt ./...

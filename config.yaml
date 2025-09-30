@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+worker:
+  count: 3
+
+logging:
+  level: info
+  format: json
+  debug_mode: false
